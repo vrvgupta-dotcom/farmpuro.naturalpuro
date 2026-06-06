@@ -3,51 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <title>Farm Puro Chutneys — Authentic Indian Chutneys, Made Fresh</title>
-<meta name="viewport" content="width=1280" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="assets/theme.css" />
 <style>
-  :root{
-    --green:#2D6A2D;
-    --green-deep:#234E22;
-    --green-soft:#3D7A3D;
-    --brown:#6B3A1F;
-    --brown-deep:#4E2A14;
-    --cream:#FAF7F2;
-    --cream-warm:#F1EBDF;
-    --gold:#C8860A;
-    --gold-soft:#E0A93C;
-    --chilli:#E8531A;
-    --ink:#1F1A14;
-    --ink-soft:#5B5347;
-    --rule:rgba(31,26,20,.10);
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
-  img{display:block;max-width:100%}
-  a{color:inherit;text-decoration:none}
-  button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
-  .wrap{max-width:1200px;margin:0 auto;padding:0 40px}
-  h1,h2,h3,h4,.serif{font-family:'Playfair Display',serif;font-weight:600;letter-spacing:-.01em;color:var(--ink)}
-  .eyebrow{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
-
-  /* ====================== HEADER ====================== */
-  .header{position:sticky;top:0;z-index:50;background:rgba(250,247,242,.92);backdrop-filter:saturate(140%) blur(10px);border-bottom:1px solid var(--rule)}
-  .header-inner{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:84px;gap:24px}
-  .brand{display:flex;align-items:center;gap:10px}
-  .brand img{height:54px;width:auto}
-  .nav{display:flex;gap:38px;justify-content:center}
-  .nav a{font-size:14px;font-weight:500;color:var(--ink);letter-spacing:.02em;position:relative;padding:6px 0}
-  .nav a.active::after,.nav a:hover::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--gold)}
-  .header-right{display:flex;justify-content:flex-end;align-items:center;gap:18px}
-  .icon-btn{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--ink);transition:background .2s}
-  .icon-btn:hover{background:rgba(45,106,45,.08)}
-  .cart{position:relative}
-  .cart-badge{position:absolute;top:4px;right:4px;background:var(--gold);color:#fff;font-size:10px;font-weight:700;min-width:16px;height:16px;border-radius:8px;display:grid;place-items:center;padding:0 4px}
-  .login{font-size:13px;font-weight:500;color:var(--ink-soft)}
-  .login:hover{color:var(--green)}
-
   /* ====================== HERO ====================== */
   .hero{position:relative;min-height:calc(100vh - 84px);background:var(--green);color:#F4EFE3;overflow:hidden;display:flex;align-items:center}
   .hero-pattern{position:absolute;inset:0;opacity:.08;pointer-events:none}
@@ -58,13 +16,6 @@
   .hero h1 em{font-style:italic;color:var(--gold-soft);font-weight:500}
   .hero p.lede{font-size:18px;line-height:1.6;color:rgba(244,239,227,.78);margin:28px 0 40px;max-width:520px}
   .ctas{display:flex;gap:14px;align-items:center}
-  .btn{display:inline-flex;align-items:center;gap:10px;padding:16px 28px;border-radius:999px;font-weight:600;font-size:14px;letter-spacing:.04em;transition:transform .15s, background .2s, color .2s}
-  .btn-gold{background:var(--gold);color:#1F1409}
-  .btn-gold:hover{background:var(--gold-soft);transform:translateY(-1px)}
-  .btn-outline{border:1.5px solid rgba(244,239,227,.5);color:#F4EFE3}
-  .btn-outline:hover{background:rgba(244,239,227,.08);border-color:#F4EFE3}
-  .btn .arrow{transition:transform .2s}
-  .btn:hover .arrow{transform:translateX(3px)}
 
   .hero-stats{display:flex;gap:40px;margin-top:60px;padding-top:32px;border-top:1px solid rgba(244,239,227,.18);max-width:520px}
   .hero-stats .s-num{font-family:'Playfair Display',serif;font-size:32px;color:var(--gold-soft);line-height:1}
@@ -183,26 +134,80 @@
   .news-form button:hover{background:var(--green-deep)}
   .news .fine{font-size:12px;color:rgba(244,239,227,.55);margin-top:14px}
 
-  /* FOOTER */
-  footer{background:#1A1410;color:rgba(244,239,227,.7);padding:80px 0 0}
-  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:48px;padding-bottom:60px}
-  .foot-brand img{height:60px;background:#FAF7F2;padding:8px;border-radius:6px}
-  .foot-brand p{margin-top:20px;font-size:13px;line-height:1.7;max-width:280px}
-  .socials{display:flex;gap:10px;margin-top:24px}
-  .socials a{width:36px;height:36px;border-radius:50%;border:1px solid rgba(244,239,227,.18);display:grid;place-items:center;color:rgba(244,239,227,.7)}
-  .socials a:hover{background:var(--gold);color:#1F1409;border-color:var(--gold)}
-  .foot-col h4{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-soft);margin-bottom:22px}
-  .foot-col ul{list-style:none;display:flex;flex-direction:column;gap:12px}
-  .foot-col a{font-size:13px;color:rgba(244,239,227,.7)}
-  .foot-col a:hover{color:#FFF8E7}
-  .copy{border-top:1px solid rgba(244,239,227,.10);padding:24px 0;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:rgba(244,239,227,.45)}
-  .copy .pays{display:flex;gap:10px;align-items:center}
-  .copy .pays span{padding:4px 10px;border:1px solid rgba(244,239,227,.14);border-radius:4px;font-size:10px;letter-spacing:.1em;font-weight:600}
-
   /* Product card image link wrapper */
   .product .pic a{display:block;width:100%;height:100%}
 
-  svg{display:block}
+  /* === Responsive: ≤900px === */
+  @media(max-width:900px){
+    section.pad{padding:72px 0}
+    .hero-grid{grid-template-columns:1fr;gap:0;padding:56px 0 40px}
+    .hero h1{font-size:52px}
+    .hero p.lede{font-size:16px;margin:20px 0 28px}
+    .hero-visual{height:380px;margin-top:40px}
+    .hero-stats{gap:28px;margin-top:40px;padding-top:24px}
+    .hero-stats .s-num{font-size:26px}
+    .scroll-cue{display:none}
+    .trust-row{grid-template-columns:repeat(2,1fr);gap:0;padding:0}
+    .trust-item{padding:24px 20px;border-right:0;border-bottom:1px solid rgba(107,58,31,.14)}
+    .trust-item:nth-child(odd){border-right:1px solid rgba(107,58,31,.14)}
+    .trust-item:nth-last-child(-n+2){border-bottom:0}
+    .product-grid{grid-template-columns:repeat(2,1fr);gap:20px}
+    .story-grid{grid-template-columns:1fr;gap:48px}
+    .story-img{aspect-ratio:16/9;max-width:100%}
+    .story-stamp{bottom:-20px;right:-12px;width:120px;height:120px;padding:20px}
+    .story-stamp .yr{font-size:32px}
+    .story-content h2{font-size:36px}
+    .why-grid{grid-template-columns:repeat(2,1fr)}
+    .why-card:last-child{grid-column:1/-1}
+    .test-grid{grid-template-columns:repeat(2,1fr)}
+    .test-grid .quote:last-child{grid-column:1/-1}
+    .news-inner{grid-template-columns:1fr;gap:36px}
+    .news h2{font-size:32px}
+    .section-head h2{font-size:36px}
+  }
+  /* === Responsive: ≤600px === */
+  @media(max-width:600px){
+    section.pad{padding:56px 0}
+    .hero-grid{padding:44px 0 32px}
+    .hero h1{font-size:38px;line-height:1.1}
+    .hero-eyebrow{font-size:10px;letter-spacing:.16em;flex-wrap:wrap;gap:6px}
+    .hero p.lede{font-size:15px}
+    .ctas{flex-direction:column;align-items:stretch}
+    .btn{justify-content:center}
+    .hero-visual{height:280px;margin-top:32px}
+    .hero-badge{width:96px;height:96px;font-size:11px;top:10px;right:8px}
+    .hero-badge strong{font-size:20px}
+    .hero-stats{flex-direction:column;gap:16px;margin-top:32px}
+    .hero-stats>div{display:flex;align-items:center;gap:14px}
+    .hero-stats .s-num{font-size:28px;min-width:56px}
+    .hero-stats .s-label{margin-top:0;font-size:11px}
+    .trust-row{grid-template-columns:1fr;padding:0}
+    .trust-item{border-right:0;border-bottom:1px solid rgba(107,58,31,.14);padding:20px}
+    .trust-item:last-child{border-bottom:0}
+    .product-grid{grid-template-columns:1fr;gap:16px}
+    .story-img{aspect-ratio:4/3}
+    .story-stamp{width:96px;height:96px;padding:16px;bottom:-16px;right:-8px}
+    .story-stamp .yr{font-size:26px}
+    .story-stamp .lbl{font-size:8px}
+    .story-content h2{font-size:28px;margin:14px 0 20px}
+    .story-content p{font-size:15px}
+    .story-content p:first-letter{font-size:38px}
+    .why-grid{grid-template-columns:1fr}
+    .why-card:last-child{grid-column:auto}
+    .why-card{padding:32px 24px}
+    .why-card h3{font-size:20px}
+    .test-grid{grid-template-columns:1fr}
+    .test-grid .quote:last-child{grid-column:auto}
+    .quote blockquote{font-size:16px}
+    .news{padding:56px 0}
+    .news h2{font-size:26px}
+    .news-form{flex-direction:column;border-radius:12px;padding:8px;gap:8px}
+    .news-form input{padding:12px 16px}
+    .news-form button{width:100%;justify-content:center;border-radius:8px}
+    .section-head{margin-bottom:40px}
+    .section-head h2{font-size:28px}
+    .section-head p{font-size:14px}
+  }
 </style>
 </head>
 <body>
@@ -221,17 +226,31 @@
       <a href="#">Contact</a>
     </nav>
     <div class="header-right">
-      <a href="#" class="login">Sign in</a>
+      <a href="login.html" class="login">Sign in</a>
       <button class="icon-btn" aria-label="Search">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
       </button>
-      <button class="icon-btn cart" aria-label="Cart">
+      <button class="icon-btn cart" aria-label="Cart" onclick="location.href='checkout.html'">
         <svg width="18" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1.2 11a2 2 0 0 1-2 1.8H9.2a2 2 0 0 1-2-1.8L6 7Z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>
         <span class="cart-badge">2</span>
+      </button>
+      <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
       </button>
     </div>
   </div>
 </header>
+<nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+  <a href="index.html">Home</a>
+  <a href="shop.html">Shop</a>
+  <a href="#">About</a>
+  <a href="#">Recipes</a>
+  <a href="#">Contact</a>
+  <div class="m-actions">
+    <a class="btn btn-gold" href="shop.html">Shop Now →</a>
+    <a class="btn" style="border:1.5px solid var(--brown);color:var(--brown-deep);border-radius:999px" href="login.html">Sign in</a>
+  </div>
+</nav>
 
 <!-- ====================== HERO ====================== -->
 <section class="hero" data-screen-label="Hero">
@@ -589,13 +608,28 @@
 </footer>
 
 <script>
+  // Hamburger nav
+  const hamburger = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobile-nav');
+  hamburger.addEventListener('click', () => {
+    const open = mobileNav.classList.toggle('open');
+    hamburger.classList.toggle('open', open);
+    hamburger.setAttribute('aria-expanded', open);
+    document.body.classList.toggle('nav-open', open);
+  });
+  mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    mobileNav.classList.remove('open');
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('nav-open');
+  }));
+
+  // Add to cart visual feedback
   function addToCartEffect(btn) {
+    const orig = btn.textContent;
     btn.textContent = 'Added ✓';
     btn.classList.add('added');
-    setTimeout(function() {
-      btn.textContent = 'Add to Cart →';
-      btn.classList.remove('added');
-    }, 1400);
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('added'); }, 1400);
   }
 </script>
 
