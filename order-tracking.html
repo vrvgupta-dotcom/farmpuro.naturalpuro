@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Track Your Order — Farm Puro</title>
+  <link rel="stylesheet" href="assets/theme.css" />
+  <style>
+    /* ── Page hero ── */
+    .page-hero {
+      background: var(--green-deep);
+      padding: 52px 0 44px;
+    }
+    .breadcrumb {
+      font-size: 12px;
+      color: rgba(244,239,227,.5);
+      margin-bottom: 14px;
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .breadcrumb a { color: rgba(244,239,227,.5); }
+    .breadcrumb a:hover { color: rgba(244,239,227,.85); }
+    .breadcrumb span { color: rgba(244,239,227,.75); }
+    .page-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 42px;
+      font-weight: 600;
+      color: #F4EFE3;
+      letter-spacing: -.02em;
+      line-height: 1.2;
+    }
+    .page-hero h1 em { font-style: italic; color: var(--gold-soft); }
+
+    /* ── Lookup card ── */
+    .lookup-section { padding: 60px 0; }
+    .lookup-card {
+      max-width: 740px;
+      margin: 0 auto;
+      background: #fff;
+      border: 1px solid var(--rule);
+      border-radius: 16px;
+      padding: 40px;
+    }
+    .lookup-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .lookup-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 28px;
+      letter-spacing: -.01em;
+    }
+    .lookup-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 12px;
+      align-items: end;
+    }
+    .lookup-field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink-soft);
+      margin-bottom: 6px;
+      letter-spacing: .04em;
+    }
+    .lookup-field input {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid var(--rule-strong);
+      border-radius: 10px;
+      background: #fff;
+      font-size: 14px;
+      color: var(--ink);
+      font-family: inherit;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .lookup-field input:focus { border-color: var(--green); }
+    .track-btn {
+      padding: 13px 28px;
+      background: var(--gold);
+      color: #1F1409;
+      border: 0;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background .2s, transform .15s;
+    }
+    .track-btn:hover { background: var(--gold-deep); transform: translateY(-1px); }
+
+    /* ── Results ── */
+    #tracking-results { display: none; }
+    #tracking-results.visible { display: block; }
+    .results-section { padding: 0 0 80px; }
+
+    .order-banner {
+      background: var(--cream-warm);
+      border: 1px solid var(--rule);
+      border-radius: 14px;
+      padding: 24px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .banner-left .order-ref {
+      font-size: 13px;
+      color: var(--ink-soft);
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+    .banner-left .order-id {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: -.01em;
+    }
+    .banner-right { text-align: right; }
+    .status-pill-lg {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      background: var(--green-tint);
+      color: var(--green-deep);
+      margin-bottom: 6px;
+    }
+    .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: pulse 1.4s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.8)} }
+    .eta { font-size: 13px; color: var(--ink-soft); font-weight: 500; }
+
+    /* ── Results grid ── */
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 28px;
+      align-items: start;
+    }
+
+    /* ── Timeline ── */
+    .timeline-card {
+      background: #fff;
+      border: 1px solid var(--rule);
+      border-radius: 14px;
+      padding: 28px;
+      margin-bottom: 16px;
+    }
+    .timeline-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 28px;
+      letter-spacing: -.01em;
+    }
+    .timeline { position: relative; padding-left: 36px; }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 11px;
+      top: 12px;
+      bottom: 12px;
+      width: 2px;
+      background: var(--rule);
+    }
+    .t-step { position: relative; padding-bottom: 28px; }
+    .t-step:last-child { padding-bottom: 0; }
+    .t-dot {
+      position: absolute;
+      left: -36px;
+      top: 3px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid var(--rule);
+      background: #fff;
+      display: grid;
+      place-items: center;
+      z-index: 1;
+    }
+    .t-dot.done { background: var(--green); border-color: var(--green); }
+    .t-dot.active { background: var(--gold); border-color: var(--gold); box-shadow: 0 0 0 4px rgba(200,134,10,.18); }
+    .t-dot.future { background: var(--cream-warm); border-color: var(--rule-strong); }
+    .t-step-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 2px;
+    }
+    .t-step.future .t-step-title { color: var(--ink-soft); }
+    .t-step-time { font-size: 12px; color: var(--ink-soft); }
+    .t-step-detail {
+      background: var(--green-tint);
+      border: 1px solid var(--green-tint-2);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--green-deep);
+      line-height: 1.5;
+    }
+
+    /* ── Map card ── */
+    .map-card {
+      background: #fff;
+      border: 1px solid var(--rule);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .map-placeholder {
+      height: 180px;
+      background: linear-gradient(135deg, #D4E8C8 0%, #A8D08D 50%, #7BB85A 100%);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .map-placeholder::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: repeating-linear-gradient(0deg, transparent, transparent 28px, rgba(255,255,255,.15) 28px, rgba(255,255,255,.15) 29px),
+                        repeating-linear-gradient(90deg, transparent, transparent 28px, rgba(255,255,255,.15) 28px, rgba(255,255,255,.15) 29px);
+    }
+    .map-pin {
+      position: relative;
+      z-index: 1;
+      background: var(--green-deep);
+      color: #fff;
+      width: 36px; height: 36px;
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      display: grid;
+      place-items: center;
+      box-shadow: 0 4px 12px rgba(31,26,20,.3);
+    }
+    .map-pin svg { transform: rotate(45deg); }
+    .map-info {
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .map-addr { font-size: 13px; color: var(--ink-soft); }
+    .map-dist { font-size: 12px; font-weight: 700; color: var(--green); }
+
+    /* ── Action buttons ── */
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .action-btn {
+      flex: 1;
+      min-width: 120px;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      text-align: center;
+      transition: background .15s, border-color .15s;
+      border: 1.5px solid var(--rule-strong);
+      background: #fff;
+      color: var(--ink);
+      text-decoration: none;
+      display: inline-block;
+    }
+    .action-btn.gold { background: var(--gold); color: #1F1409; border-color: var(--gold); }
+    .action-btn.gold:hover { background: var(--gold-deep); border-color: var(--gold-deep); }
+    .action-btn:not(.gold):hover { background: var(--cream-warm); }
+
+    /* ── Freshness note ── */
+    .freshness-note {
+      background: var(--green-tint);
+      border: 1px solid var(--green-tint-2);
+      border-radius: 12px;
+      padding: 16px 18px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      font-size: 13px;
+      color: var(--green-deep);
+      line-height: 1.55;
+    }
+    .freshness-icon { flex-shrink: 0; margin-top: 1px; }
+
+    /* ── Order summary (right col) ── */
+    .summary-card {
+      background: #fff;
+      border: 1px solid var(--rule);
+      border-radius: 14px;
+      padding: 24px;
+      position: sticky;
+      top: 108px;
+    }
+    .summary-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 18px;
+      letter-spacing: -.01em;
+    }
+    .sum-item {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .sum-item:last-of-type { border-bottom: 0; }
+    .sum-thumb {
+      width: 52px; height: 52px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid var(--rule);
+      flex-shrink: 0;
+    }
+    .sum-item-name { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+    .sum-item-qty { font-size: 12px; color: var(--ink-soft); }
+    .sum-item-price { font-weight: 700; color: var(--brown-deep); margin-left: auto; font-size: 14px; flex-shrink: 0; }
+    .sum-totals { margin-top: 16px; }
+    .sum-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--ink-soft);
+      padding: 5px 0;
+    }
+    .sum-row.total { font-weight: 700; font-size: 15px; color: var(--ink); border-top: 1px solid var(--rule); margin-top: 8px; padding-top: 12px; }
+    .deliver-to {
+      background: var(--cream-warm);
+      border-radius: 10px;
+      padding: 14px;
+      margin-top: 16px;
+    }
+    .deliver-label { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 6px; }
+    .deliver-addr { font-size: 13px; color: var(--ink); line-height: 1.55; }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .results-grid { grid-template-columns: 1fr; }
+      .summary-card { position: static; }
+      .lookup-form { grid-template-columns: 1fr 1fr; }
+      .track-btn { grid-column: 1 / -1; width: 100%; border-radius: 10px; padding: 14px; }
+      .page-hero h1 { font-size: 30px; }
+    }
+    @media (max-width: 600px) {
+      .lookup-card { padding: 24px 20px; }
+      .lookup-form { grid-template-columns: 1fr; }
+      .track-btn { grid-column: auto; }
+      .order-banner { flex-direction: column; align-items: flex-start; }
+      .banner-right { text-align: left; }
+      .action-buttons { flex-direction: column; }
+      .action-btn { min-width: unset; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="wrap">
+      <div class="header-inner">
+        <a href="index.html" class="brand">
+          <img src="assets/logo.png" alt="Farm Puro" />
+        </a>
+        <nav class="nav" aria-label="Main navigation">
+          <a href="index.html">Home</a>
+          <a href="shop.html">Shop</a>
+          <a href="#">About</a>
+          <a href="#">Recipes</a>
+        </nav>
+        <div class="header-right">
+          <a href="shop.html" class="icon-btn" aria-label="Search">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          </a>
+          <a href="checkout.html" class="icon-btn cart" aria-label="Cart">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <span class="cart-badge">2</span>
+          </a>
+          <a href="account.html" class="login">My Account</a>
+          <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="#">About</a>
+    <a href="#">Recipes</a>
+    <div class="m-actions">
+      <a class="btn btn-gold" href="shop.html">Shop Now →</a>
+      <a class="btn" style="border:1.5px solid var(--brown);color:var(--brown-deep);border-radius:999px" href="account.html">My Account</a>
+    </div>
+  </nav>
+
+  <!-- Page hero -->
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a> ›
+        <a href="account.html">My Account</a> ›
+        <span>Track Order</span>
+      </div>
+      <h1>Track your order.<br/><em>Know where your jars are.</em></h1>
+    </div>
+  </section>
+
+  <!-- Lookup -->
+  <section class="lookup-section">
+    <div class="wrap">
+      <div class="lookup-card">
+        <p class="lookup-eyebrow">Order lookup</p>
+        <h2 class="lookup-title">Enter your order details</h2>
+        <form class="lookup-form" onsubmit="trackOrder(event)">
+          <div class="lookup-field">
+            <label for="order-num">Order number</label>
+            <input type="text" id="order-num" placeholder="e.g. FP-2026-4421" value="FP-2026-4421" />
+          </div>
+          <div class="lookup-field">
+            <label for="track-email">Email address</label>
+            <input type="email" id="track-email" placeholder="you@example.com" value="ananya@example.com" />
+          </div>
+          <button type="submit" class="track-btn">Track Order →</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section class="results-section">
+    <div class="wrap">
+      <div id="tracking-results">
+
+        <!-- Order banner -->
+        <div class="order-banner">
+          <div class="banner-left">
+            <div class="order-ref">Order number</div>
+            <div class="order-id">#FP-2026-4421</div>
+          </div>
+          <div class="banner-right">
+            <div>
+              <span class="status-pill-lg"><span class="pulse"></span> Out for Delivery</span>
+            </div>
+            <div class="eta">Expected today before 8 PM · 6 Jun 2026</div>
+          </div>
+        </div>
+
+        <!-- Grid -->
+        <div class="results-grid">
+
+          <!-- Left col -->
+          <div>
+            <!-- Timeline -->
+            <div class="timeline-card">
+              <div class="timeline-title">Delivery timeline</div>
+              <div class="timeline">
+
+                <div class="t-step">
+                  <div class="t-dot done">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  <div class="t-step-title">Order Placed</div>
+                  <div class="t-step-time">4 Jun 2026, 10:32 AM</div>
+                </div>
+
+                <div class="t-step">
+                  <div class="t-dot done">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  <div class="t-step-title">Order Confirmed</div>
+                  <div class="t-step-time">4 Jun 2026, 11:05 AM</div>
+                </div>
+
+                <div class="t-step">
+                  <div class="t-dot done">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  <div class="t-step-title">Made &amp; Packed</div>
+                  <div class="t-step-time">5 Jun 2026, 8:00 AM</div>
+                </div>
+
+                <div class="t-step">
+                  <div class="t-dot done">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  <div class="t-step-title">Dispatched</div>
+                  <div class="t-step-time">5 Jun 2026, 2:14 PM · Delhivery #DL4482910</div>
+                </div>
+
+                <div class="t-step">
+                  <div class="t-dot active">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#1F1409" stroke-width="2.5"><circle cx="12" cy="12" r="4" fill="#1F1409"/></svg>
+                  </div>
+                  <div class="t-step-title">Out for Delivery</div>
+                  <div class="t-step-time">6 Jun 2026, 9:18 AM</div>
+                  <div class="t-step-detail">
+                    Your order is with our delivery partner and is on its way. Delivery agent: Ravi K. · +91 99887 12345
+                  </div>
+                </div>
+
+                <div class="t-step future">
+                  <div class="t-dot future"></div>
+                  <div class="t-step-title">Delivered</div>
+                  <div class="t-step-time">Expected today before 8 PM</div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Map -->
+            <div class="map-card">
+              <div class="map-placeholder">
+                <div class="map-pin">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+              </div>
+              <div class="map-info">
+                <div class="map-addr">14, Indiranagar 100 Ft Road, HSR Layout, Bengaluru</div>
+                <div class="map-dist">3.2 km away</div>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="action-buttons">
+              <a href="checkout.html" class="action-btn gold">Reorder these jars →</a>
+              <button class="action-btn" onclick="alert('Invoice download coming soon!')">Download Invoice</button>
+              <button class="action-btn" onclick="alert('Support team: support@farmpuro.in')">Contact Support</button>
+            </div>
+
+            <!-- Freshness note -->
+            <div class="freshness-note">
+              <span class="freshness-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.8"><path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2z" opacity=".2" fill="var(--green)"/><path d="M12 6v6l4 2"/></svg>
+              </span>
+              <div>
+                <strong>Freshness reminder:</strong> Your chutneys were made on 5 Jun 2026 — less than 24 hours ago. Once delivered, refrigerate and enjoy within 90 days.
+              </div>
+            </div>
+          </div>
+
+          <!-- Right col: order summary -->
+          <aside>
+            <div class="summary-card">
+              <div class="summary-title">Order summary</div>
+
+              <div class="sum-item">
+                <img src="assets/coriander-mint.jpg" class="sum-thumb" alt="Coriander Mint" />
+                <div>
+                  <div class="sum-item-name">Coriander Mint</div>
+                  <div class="sum-item-qty">Qty 1 · 200g</div>
+                </div>
+                <div class="sum-item-price">₹249</div>
+              </div>
+
+              <div class="sum-item">
+                <img src="assets/garlic-red.jpg" class="sum-thumb" alt="Garlic Red Chilli" />
+                <div>
+                  <div class="sum-item-name">Garlic Red Chilli</div>
+                  <div class="sum-item-qty">Qty 1 · 200g</div>
+                </div>
+                <div class="sum-item-price">₹299</div>
+              </div>
+
+              <div class="sum-totals">
+                <div class="sum-row"><span>Subtotal</span><span>₹548</span></div>
+                <div class="sum-row"><span>Delivery</span><span style="color:var(--green);font-weight:600;">Free</span></div>
+                <div class="sum-row total"><span>Total paid</span><span>₹548</span></div>
+              </div>
+
+              <div class="deliver-to">
+                <div class="deliver-label">Delivering to</div>
+                <div class="deliver-addr">Ananya Krishnan<br/>14, Indiranagar 100 Ft Road<br/>HSR Layout, Bengaluru 560 038</div>
+              </div>
+            </div>
+          </aside>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="foot-brand">
+          <img src="assets/logo.png" alt="Farm Puro" />
+          <p>Premium chutneys made fresh every week. Pure ingredients, regional soul, no preservatives.</p>
+          <div class="socials">
+            <a href="#" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+            <a href="#" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+          </div>
+        </div>
+        <div class="foot-col">
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="shop.html">All Chutneys</a></li>
+            <li><a href="shop.html">Bestsellers</a></li>
+            <li><a href="shop.html">Gift Sets</a></li>
+          </ul>
+        </div>
+        <div class="foot-col">
+          <h4>Help</h4>
+          <ul>
+            <li><a href="order-tracking.html">Track Order</a></li>
+            <li><a href="#">Returns</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="foot-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">Our Story</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="copy">
+        <span>© 2026 Farm Puro. All rights reserved.</span>
+        <div class="pays">
+          <span>UPI</span><span>VISA</span><span>MC</span><span>FSSAI</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Hamburger
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobile-nav');
+    hamburger.addEventListener('click', () => {
+      const open = mobileNav.classList.toggle('open');
+      hamburger.classList.toggle('open', open);
+      hamburger.setAttribute('aria-expanded', open);
+      document.body.classList.toggle('nav-open', open);
+    });
+    mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      mobileNav.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('nav-open');
+    }));
+
+    // Track order
+    function trackOrder(e) {
+      e.preventDefault();
+      const results = document.getElementById('tracking-results');
+      results.classList.add('visible');
+      setTimeout(() => {
+        results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 80);
+    }
+  </script>
+</body>
+</html>
